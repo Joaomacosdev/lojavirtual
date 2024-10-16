@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = "br.com.lojavirtual")
 @EnableJpaRepositories(basePackages = "br.com.lojavirtual.repository")
 @EnableTransactionManagement
-
 public class LojavirtualApplication {
 
 	public static void main(String[] args) {
