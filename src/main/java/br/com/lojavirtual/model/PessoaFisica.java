@@ -2,12 +2,7 @@ package br.com.lojavirtual.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "pessoa_fisica")
@@ -21,6 +16,8 @@ public class PessoaFisica extends Pessoa {
 
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
+
+
 
 	public String getCpf() {
 		return cpf;

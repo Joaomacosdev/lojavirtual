@@ -3,13 +3,7 @@ package br.com.lojavirtual.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "produto")
@@ -61,7 +55,28 @@ public class Produto implements Serializable {
 	private Boolean alertaQtdeEstoque = Boolean.FALSE;
 
 	private Integer qtdeClique = 0;
-	
+
+	@ManyToOne(targetEntity = Pessoa.class)
+	@JoinColumn(name = "empresa_id", nullable = false,
+			foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
+	private Pessoa empresa;
+
+	public String getTpUnidade() {
+		return tpUnidade;
+	}
+
+	public void setTpUnidade(String tpUnidade) {
+		this.tpUnidade = tpUnidade;
+	}
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Pessoa empresa) {
+		this.empresa = empresa;
+	}
+
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}

@@ -19,13 +19,15 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
+@Profile("test")
 @SpringBootTest(classes = LojavirtualApplication.class)
-class LojavirtualApplicationTests {
+public class LojavirtualApplicationTests {
 
 	@Autowired
 	private AcessoController acessoController;
@@ -46,7 +48,7 @@ class LojavirtualApplicationTests {
 
 		Acesso acesso = new Acesso();
 
-		acesso.setDescricao("ROLE_COMPRADOR");
+		acesso.setDescricao("ROLE_COMPRADOR" + Calendar.getInstance().getTimeInMillis());
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
@@ -70,7 +72,6 @@ class LojavirtualApplicationTests {
 
 
 	}
-
 
 
 	@Test
@@ -208,11 +209,13 @@ class LojavirtualApplicationTests {
 
 
 	@Test
-	public void testCadastraAcesso() {
+	public void testCadastraAcesso() throws ExceptionLojaVirtual {
+
+		String descAcesso = "ROLE_ADMIN" + Calendar.getInstance().getTimeInMillis();
 
 		Acesso acesso = new Acesso();
 
-		acesso.setDescricao("ROLE_ADMIN");
+		acesso.setDescricao(descAcesso);
 
 		assertEquals(true, acesso.getId() == null);
 
