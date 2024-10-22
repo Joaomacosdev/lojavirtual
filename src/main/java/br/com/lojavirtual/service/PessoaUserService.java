@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 
 @Service
@@ -23,8 +25,16 @@ public class PessoaUserService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ServiceSendEmail serviceSendEmail;
+
     public PessoaJuridica salvarPessoaJuridica(PessoaJuridica juridica){
         juridica = pessoaRepository.save(juridica);
+
+        for (int i = 0; i< juridica.getEnderecos().size(); i++){
+            juridica.getEnderecos().get(i).setPessoa(juridica);
+            juridica.getEnderecos().get(i).setEmpresa(juridica);
+        }
 
         Usuario usuarioPj = usuarioRepository.findUserByPessoa(juridica.getId(), juridica.getEmail());
 
@@ -51,6 +61,20 @@ public class PessoaUserService {
             usuarioRepository.insereAcessoUserPj(usuarioPj.getId());
 
             /*Fazer o envio de e-mail do login e da senha*/
+
+            StringBuilder menssagemHtml = new StringBuilder();
+
+            menssagemHtml.append("<b>Segue abaixo seus dados de acesso para a loja virtual</b>");
+            menssagemHtml.append("<b>Login: </b>"+juridica.getEmail()+"</b><br/>");
+            menssagemHtml.append("<b>Senha: </b>").append(senha).append("<br/><br/>");
+            menssagemHtml.append("Obrigado!");
+
+
+            try {
+                serviceSendEmail.enviarEmailHtml("Acesso Gerado para Loja Virtual", menssagemHtml.toString(), juridica.getEmail());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
 
