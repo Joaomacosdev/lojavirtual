@@ -1,5 +1,6 @@
 package br.com.lojavirtual.service;
 
+import br.com.lojavirtual.dto.CepDto;
 import br.com.lojavirtual.model.PessoaFisica;
 import br.com.lojavirtual.model.PessoaJuridica;
 import br.com.lojavirtual.model.Usuario;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Calendar;
 
@@ -31,10 +33,10 @@ public class PessoaUserService {
     @Autowired
     private PessoaFisicaRepository pessoaFisicaRepository;
 
-    public PessoaJuridica salvarPessoaJuridica(PessoaJuridica juridica){
+    public PessoaJuridica salvarPessoaJuridica(PessoaJuridica juridica) {
         //juridica = pessoaRepository.save(juridica);
 
-        for (int i = 0; i< juridica.getEnderecos().size(); i++){
+        for (int i = 0; i < juridica.getEnderecos().size(); i++) {
             juridica.getEnderecos().get(i).setPessoa(juridica);
             juridica.getEnderecos().get(i).setEmpresa(juridica);
         }
@@ -47,7 +49,7 @@ public class PessoaUserService {
 
             String constraint = usuarioRepository.consultaConstraintAcesso();
             if (constraint != null) {
-                jdbcTemplate.execute("begin; alter table usuarios_acesso drop constraint " + constraint +"; commit;");
+                jdbcTemplate.execute("begin; alter table usuarios_acesso drop constraint " + constraint + "; commit;");
             }
 
             usuarioPj = new Usuario();
@@ -72,10 +74,9 @@ public class PessoaUserService {
             StringBuilder menssagemHtml = new StringBuilder();
 
             menssagemHtml.append("<b>Segue abaixo seus dados de acesso para a loja virtual</b><br/>");
-            menssagemHtml.append("<b>Login: </b>"+juridica.getEmail()+"<br/>");
+            menssagemHtml.append("<b>Login: </b>" + juridica.getEmail() + "<br/>");
             menssagemHtml.append("<b>Senha: </b>").append(senha).append("<br/><br/>");
             menssagemHtml.append("Obrigado!");
-
 
 
             try {
@@ -90,11 +91,9 @@ public class PessoaUserService {
     }
 
 
-
-
     public PessoaFisica salvarPessoaFisica(PessoaFisica pessoaFisica) {
 
-        for (int i = 0; i< pessoaFisica.getEnderecos().size(); i++){
+        for (int i = 0; i < pessoaFisica.getEnderecos().size(); i++) {
             pessoaFisica.getEnderecos().get(i).setPessoa(pessoaFisica);
             //pessoaFisica.getEnderecos().get(i).setEmpresa(pessoaFisica);
         }
@@ -107,7 +106,7 @@ public class PessoaUserService {
 
             String constraint = usuarioRepository.consultaConstraintAcesso();
             if (constraint != null) {
-                jdbcTemplate.execute("begin; alter table usuarios_acesso drop constraint " + constraint +"; commit;");
+                jdbcTemplate.execute("begin; alter table usuarios_acesso drop constraint " + constraint + "; commit;");
             }
 
             usuarioPf = new Usuario();
@@ -130,10 +129,9 @@ public class PessoaUserService {
             StringBuilder menssagemHtml = new StringBuilder();
 
             menssagemHtml.append("<b>Segue abaixo seus dados de acesso para a loja virtual</b><br/>");
-            menssagemHtml.append("<b>Login: </b>" + pessoaFisica.getEmail()+"<br/>");
+            menssagemHtml.append("<b>Login: </b>" + pessoaFisica.getEmail() + "<br/>");
             menssagemHtml.append("<b>Senha: </b>").append(senha).append("<br/><br/>");
             menssagemHtml.append("Obrigado!");
-
 
 
             try {
@@ -145,5 +143,9 @@ public class PessoaUserService {
         }
 
         return pessoaFisica;
+    }
+
+    public CepDto consultaCep(String cep) {
+        return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json/", CepDto.class).getBody();
     }
 }
