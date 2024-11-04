@@ -1,5 +1,7 @@
 package br.com.lojavirtual.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 import javax.persistence.*;
@@ -18,16 +20,17 @@ public class CategoriaProduto implements Serializable {
 	@Column(name = "nome_desc", nullable = false)
 	private String nomeDesc;
 
+	@JsonProperty(value = "empresa")
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "empresa_id", nullable = false,
 			foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
-	private Pessoa empresa;
+	private PessoaJuridica empresa = new PessoaJuridica();
 
-	public Pessoa getEmpresa() {
+	public PessoaJuridica getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(Pessoa empresa) {
+	public void setEmpresa(PessoaJuridica empresa) {
 		this.empresa = empresa;
 	}
 
