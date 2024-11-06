@@ -52,7 +52,6 @@ public class NotaFiscalCompraController {
         return new ResponseEntity<NotaFiscalCompra>(fiscalCompraSalvo, HttpStatus.OK);
     }
 
-
     @ResponseBody
     @DeleteMapping(value = "**/deleteNotaFiscalCompra/{id}")
     public ResponseEntity<?> deleteNotaFiscalCompra(@PathVariable("id") Long id) {
