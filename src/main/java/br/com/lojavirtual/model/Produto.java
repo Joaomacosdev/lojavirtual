@@ -2,6 +2,8 @@ package br.com.lojavirtual.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -59,9 +61,9 @@ public class Produto implements Serializable {
 	private BigDecimal valorVenda = BigDecimal.ZERO;
 
 	@Column(nullable = false)
-	private Integer QtdEstoque = 0;
+	private Integer qtdEstoque = 0;
 
-	private Integer QtdeAlertaEstoque = 0;
+	private Integer qtdeAlertaEstoque = 0;
 
 	private String linkYoutube;
 
@@ -87,6 +89,16 @@ public class Produto implements Serializable {
 			foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "marca_produto_fk"))
 	private MarcaProduto marcaProduto;
 
+	@OneToMany(mappedBy = "produto", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<ImagemProduto> imagens = new ArrayList<ImagemProduto>();
+
+	public List<ImagemProduto> getImagens() {
+		return imagens;
+	}
+
+	public void setImagens(List<ImagemProduto> imagens) {
+		this.imagens = imagens;
+	}
 
 	public MarcaProduto getMarcaProduto() {
 		return marcaProduto;
@@ -203,19 +215,19 @@ public class Produto implements Serializable {
 	}
 
 	public Integer getQtdEstoque() {
-		return QtdEstoque;
+		return qtdEstoque;
 	}
 
 	public void setQtdEstoque(Integer qtdEstoque) {
-		QtdEstoque = qtdEstoque;
+		this.qtdEstoque = qtdEstoque;
 	}
 
 	public Integer getQtdeAlertaEstoque() {
-		return QtdeAlertaEstoque;
+		return qtdeAlertaEstoque;
 	}
 
 	public void setQtdeAlertaEstoque(Integer qtdeAlertaEstoque) {
-		QtdeAlertaEstoque = qtdeAlertaEstoque;
+		this.qtdeAlertaEstoque = qtdeAlertaEstoque;
 	}
 
 	public String getLinkYoutube() {

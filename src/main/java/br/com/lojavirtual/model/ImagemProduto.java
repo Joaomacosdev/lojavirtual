@@ -1,5 +1,8 @@
 package br.com.lojavirtual.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import net.minidev.json.annotate.JsonIgnore;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -32,21 +35,23 @@ public class ImagemProduto implements Serializable {
 	@Column(columnDefinition = "text", nullable = false)
 	private String imagemMiniatura;
 
+	@JsonIgnoreProperties(allowGetters = true)
 	@ManyToOne
 	@JoinColumn(name = "produto_id", nullable = false,
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "produto_fk"))
 	private Produto produto;
 
+	@JsonIgnoreProperties(allowGetters = true)
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "empresa_id", nullable = false,
 			foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
-	private Pessoa empresa;
+	private PessoaJuridica empresa;
 
-	public Pessoa getEmpresa() {
+	public PessoaJuridica  getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(Pessoa empresa) {
+	public void setEmpresa(PessoaJuridica empresa) {
 		this.empresa = empresa;
 	}
 
