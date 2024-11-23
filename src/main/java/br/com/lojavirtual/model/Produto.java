@@ -1,5 +1,7 @@
 package br.com.lojavirtual.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -89,6 +91,7 @@ public class Produto implements Serializable {
 			foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "marca_produto_fk"))
 	private MarcaProduto marcaProduto;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "produto", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<ImagemProduto> imagens = new ArrayList<ImagemProduto>();
 

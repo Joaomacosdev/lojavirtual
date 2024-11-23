@@ -11,9 +11,10 @@ public class VendaService {
     private JdbcTemplate jdbcTemplate;
 
 
+
     public void exclusaoTotalVendaBanco2(Long idVenda) {
         String sql = "begin; update vd_cp_loja_virt set excluido = true where id = " + idVenda +"; commit;";
-        jdbcTemplate.execute(sql);;
+        jdbcTemplate.execute(sql);
     }
 
 

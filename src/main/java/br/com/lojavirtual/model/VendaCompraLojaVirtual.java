@@ -15,224 +15,234 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "vd_cp_loja_virt")
 @SequenceGenerator(name = "seq_vd_cp_loja_virt", sequenceName = "seq_vd_cp_loja_virt", allocationSize = 1, initialValue = 1)
-public class  VendaCompraLojaVirtual implements Serializable {
+public class VendaCompraLojaVirtual implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_vd_cp_loja_virt")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_vd_cp_loja_virt")
+    private Long id;
 
-	@NotNull(message = "A pessoa compradora deve ser informado ")
-	@ManyToOne(targetEntity = PessoaFisica.class, cascade = CascadeType.ALL)
-	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value =
-			ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
-	private PessoaFisica pessoa;
+    @NotNull(message = "A pessoa compradora deve ser informado ")
+    @ManyToOne(targetEntity = PessoaFisica.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value =
+            ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
+    private PessoaFisica pessoa;
 
-	@NotNull(message = "O endereco de entrega deve ser informado")
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "endereco_entrega_id", nullable = false, foreignKey = @ForeignKey(value =
-			ConstraintMode.CONSTRAINT, name = "endereco_entrega_fk"))
-	private Endereco enderecoEntrega;
+    @NotNull(message = "O endereco de entrega deve ser informado")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_entrega_id", nullable = false, foreignKey = @ForeignKey(value =
+            ConstraintMode.CONSTRAINT, name = "endereco_entrega_fk"))
+    private Endereco enderecoEntrega;
 
-	@NotNull(message = "O endereco de combraça deve ser informado")
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "endereco_cobranca_id", nullable = false, foreignKey = @ForeignKey(value =
-			ConstraintMode.CONSTRAINT, name = "endereco_cobranca_fk"))
-	private Endereco enderecoCobranca;
+    @NotNull(message = "O endereco de combraça deve ser informado")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_cobranca_id", nullable = false, foreignKey = @ForeignKey(value =
+            ConstraintMode.CONSTRAINT, name = "endereco_cobranca_fk"))
+    private Endereco enderecoCobranca;
 
-	@Min(value = 1, message = "Valor total da venda é invalida")
-	@Column(nullable = false)
-	private BigDecimal valorTotal;
+    @Min(value = 1, message = "Valor total da venda é invalida")
+    @Column(nullable = false)
+    private BigDecimal valorTotal;
 
-	private BigDecimal valorDesconto;
+    private BigDecimal valorDesconto;
 
-	@NotNull(message = "A forma de pagamento deve ser informado")
-	@ManyToOne
-	@JoinColumn(name = "forma_pagamento_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "forma_pagamento_fk"))
-	private FormaPagamento formaPagamento;
+    @NotNull(message = "A forma de pagamento deve ser informado")
+    @ManyToOne
+    @JoinColumn(name = "forma_pagamento_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "forma_pagamento_fk"))
+    private FormaPagamento formaPagamento;
 
-	@JsonIgnoreProperties(allowGetters = true)
-	@NotNull(message = "A nota fiscal deve ser informada")
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "nota_fiscal_venda_id", nullable = true, foreignKey = @ForeignKey(value =
-			ConstraintMode.CONSTRAINT, name = "nota_fiscal_venda_fk"))
-	private NotaFiscalVenda notaFiscalVenda;
+    @JsonIgnoreProperties(allowGetters = true)
+    @NotNull(message = "A nota fiscal deve ser informada")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "nota_fiscal_venda_id", nullable = true, foreignKey = @ForeignKey(value =
+            ConstraintMode.CONSTRAINT, name = "nota_fiscal_venda_fk"))
+    private NotaFiscalVenda notaFiscalVenda;
 
-	@ManyToOne
-	@JoinColumn(name = "cupom_desc_id", foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "cupom_desc_fk"))
-	private CupDesc cupDesc;
+    @ManyToOne
+    @JoinColumn(name = "cupom_desc_id", foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "cupom_desc_fk"))
+    private CupDesc cupDesc;
 
-	@Min(value = 5, message = "Valor dofrete deve ser no minimo 5")
-	@Column(nullable = false)
-	private BigDecimal valorFret;
+    @Min(value = 5, message = "Valor dofrete deve ser no minimo 5")
+    @Column(nullable = false)
+    private BigDecimal valorFret;
 
-	@Min(value = 1, message = "Dia de entrega é inválido")
-	@Column(nullable = false)
-	private Integer diaEntrega;
+    @Min(value = 1, message = "Dia de entrega é inválido")
+    @Column(nullable = false)
+    private Integer diaEntrega;
 
-	@NotNull(message = "Data da venda deve ser informada")
-	@Column(nullable = false)
-	@Temporal(TemporalType.DATE)
-	private Date dataVenda;
+    @NotNull(message = "Data da venda deve ser informada")
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date dataVenda;
 
-	@NotNull(message = "Data de entrega deve ser informada")
-	@Column(nullable = false)
-	@Temporal(TemporalType.DATE)
-	private Date dataEntrega;
+    @NotNull(message = "Data de entrega deve ser informada")
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date dataEntrega;
 
-	@NotNull(message = "A empresa dona do registro deve ser informada")
-	@ManyToOne(targetEntity = PessoaJuridica.class)
-	@JoinColumn(name = "empresa_id", nullable = false,
-			foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
-	private PessoaJuridica empresa;
+    @NotNull(message = "A empresa dona do registro deve ser informada")
+    @ManyToOne(targetEntity = PessoaJuridica.class)
+    @JoinColumn(name = "empresa_id", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
+    private PessoaJuridica empresa;
 
-	@OneToMany(mappedBy = "vendaCompraLojaVirtual", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<ItemVendaLoja> itemVendaLojas = new ArrayList<ItemVendaLoja>();
+    @OneToMany(mappedBy = "vendaCompraLojaVirtual", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ItemVendaLoja> itemVendaLojas = new ArrayList<ItemVendaLoja>();
 
-	public List<ItemVendaLoja> getItemVendaLojas() {
-		return itemVendaLojas;
-	}
+    private Boolean excluido = Boolean.FALSE;
 
-	public void setItemVendaLojas(List<ItemVendaLoja> itemVendaLojas) {
-		this.itemVendaLojas = itemVendaLojas;
-	}
+    public Boolean getExcluido() {
+        return excluido;
+    }
 
-	public PessoaJuridica getEmpresa() {
-		return empresa;
-	}
+    public void setExcluido(Boolean excluido) {
+        this.excluido = excluido;
+    }
 
-	public void setEmpresa(PessoaJuridica empresa) {
-		this.empresa = empresa;
-	}
+    public List<ItemVendaLoja> getItemVendaLojas() {
+        return itemVendaLojas;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setItemVendaLojas(List<ItemVendaLoja> itemVendaLojas) {
+        this.itemVendaLojas = itemVendaLojas;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public PessoaJuridica getEmpresa() {
+        return empresa;
+    }
 
-	public PessoaFisica getPessoa() {
-		return pessoa;
-	}
+    public void setEmpresa(PessoaJuridica empresa) {
+        this.empresa = empresa;
+    }
 
-	public void setPessoa(PessoaFisica pessoa) {
-		this.pessoa = pessoa;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Endereco getEnderecoEntrega() {
-		return enderecoEntrega;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setEnderecoEntrega(Endereco enderecoEntrega) {
-		this.enderecoEntrega = enderecoEntrega;
-	}
+    public PessoaFisica getPessoa() {
+        return pessoa;
+    }
 
-	public Endereco getEnderecoCobranca() {
-		return enderecoCobranca;
-	}
+    public void setPessoa(PessoaFisica pessoa) {
+        this.pessoa = pessoa;
+    }
 
-	public void setEnderecoCobranca(Endereco enderecoCobranca) {
-		this.enderecoCobranca = enderecoCobranca;
-	}
+    public Endereco getEnderecoEntrega() {
+        return enderecoEntrega;
+    }
 
-	public BigDecimal getValorTotal() {
-		return valorTotal;
-	}
+    public void setEnderecoEntrega(Endereco enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
+    }
 
-	public void setValorTotal(BigDecimal valorTotal) {
-		this.valorTotal = valorTotal;
-	}
+    public Endereco getEnderecoCobranca() {
+        return enderecoCobranca;
+    }
 
-	public BigDecimal getValorDesconto() {
-		return valorDesconto;
-	}
+    public void setEnderecoCobranca(Endereco enderecoCobranca) {
+        this.enderecoCobranca = enderecoCobranca;
+    }
 
-	public void setValorDesconto(BigDecimal valorDesconto) {
-		this.valorDesconto = valorDesconto;
-	}
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
 
-	public FormaPagamento getFormaPagamento() {
-		return formaPagamento;
-	}
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
 
-	public void setFormaPagamento(FormaPagamento formaPagamento) {
-		this.formaPagamento = formaPagamento;
-	}
+    public BigDecimal getValorDesconto() {
+        return valorDesconto;
+    }
 
-	public NotaFiscalVenda getNotaFiscalVenda() {
-		return notaFiscalVenda;
-	}
+    public void setValorDesconto(BigDecimal valorDesconto) {
+        this.valorDesconto = valorDesconto;
+    }
 
-	public void setNotaFiscalVenda(NotaFiscalVenda notaFiscalVenda) {
-		this.notaFiscalVenda = notaFiscalVenda;
-	}
+    public FormaPagamento getFormaPagamento() {
+        return formaPagamento;
+    }
 
-	public CupDesc getCupDesc() {
-		return cupDesc;
-	}
+    public void setFormaPagamento(FormaPagamento formaPagamento) {
+        this.formaPagamento = formaPagamento;
+    }
 
-	public void setCupDesc(CupDesc cupDesc) {
-		this.cupDesc = cupDesc;
-	}
+    public NotaFiscalVenda getNotaFiscalVenda() {
+        return notaFiscalVenda;
+    }
 
-	public BigDecimal getValorFret() {
-		return valorFret;
-	}
+    public void setNotaFiscalVenda(NotaFiscalVenda notaFiscalVenda) {
+        this.notaFiscalVenda = notaFiscalVenda;
+    }
 
-	public void setValorFret(BigDecimal valorFret) {
-		this.valorFret = valorFret;
-	}
+    public CupDesc getCupDesc() {
+        return cupDesc;
+    }
 
-	public Integer getDiaEntrega() {
-		return diaEntrega;
-	}
+    public void setCupDesc(CupDesc cupDesc) {
+        this.cupDesc = cupDesc;
+    }
 
-	public void setDiaEntrega(Integer diaEntrega) {
-		this.diaEntrega = diaEntrega;
-	}
+    public BigDecimal getValorFret() {
+        return valorFret;
+    }
 
-	public Date getDataVenda() {
-		return dataVenda;
-	}
+    public void setValorFret(BigDecimal valorFret) {
+        this.valorFret = valorFret;
+    }
 
-	public void setDataVenda(Date dataVenda) {
-		this.dataVenda = dataVenda;
-	}
+    public Integer getDiaEntrega() {
+        return diaEntrega;
+    }
 
-	public Date getDataEntrega() {
-		return dataEntrega;
-	}
+    public void setDiaEntrega(Integer diaEntrega) {
+        this.diaEntrega = diaEntrega;
+    }
 
-	public void setDataEntrega(Date dataEntrega) {
-		this.dataEntrega = dataEntrega;
-	}
+    public Date getDataVenda() {
+        return dataVenda;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public void setDataVenda(Date dataVenda) {
+        this.dataVenda = dataVenda;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		VendaCompraLojaVirtual other = (VendaCompraLojaVirtual) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
+    public Date getDataEntrega() {
+        return dataEntrega;
+    }
+
+    public void setDataEntrega(Date dataEntrega) {
+        this.dataEntrega = dataEntrega;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        VendaCompraLojaVirtual other = (VendaCompraLojaVirtual) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 
 }
