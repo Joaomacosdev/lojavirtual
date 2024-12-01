@@ -1,5 +1,7 @@
 package br.com.lojavirtual.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 import javax.persistence.ConstraintMode;
@@ -32,13 +34,14 @@ public class StatusRastreio implements Serializable {
 
 	private String status;
 	
-	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "venda_compra_loja_virt_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "venda_compra_loja_virt_fk"))
 	private VendaCompraLojaVirtual vendaCompraLojaVirtual;
 
-	@ManyToOne(targetEntity = Pessoa.class)
+	@JsonIgnore
+	@ManyToOne(targetEntity = PessoaJuridica.class)
 	@JoinColumn(name = "empresa_id", nullable = false,
 			foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
 	private PessoaJuridica empresa;

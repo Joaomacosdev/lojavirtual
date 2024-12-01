@@ -2,7 +2,9 @@ package br.com.lojavirtual.controller;
 
 import br.com.lojavirtual.ExceptionLojaVirtual;
 import br.com.lojavirtual.model.NotaFiscalCompra;
+import br.com.lojavirtual.model.NotaFiscalVenda;
 import br.com.lojavirtual.repository.NotaFiscalCompraRepository;
+import br.com.lojavirtual.repository.NotaFiscalVendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,9 @@ public class NotaFiscalCompraController {
 
     @Autowired
     private NotaFiscalCompraRepository notaFiscalCompraRepository;
+
+    @Autowired
+    private NotaFiscalVendaRepository notaFiscalVendaRepository;
 
     @ResponseBody
     @PostMapping(value = "**/salvarNotaFiscalCompra")
@@ -74,6 +79,37 @@ public class NotaFiscalCompraController {
 
         return new ResponseEntity<NotaFiscalCompra>(notaFiscalCompra, HttpStatus.OK);
     }
+
+    @ResponseBody
+    @GetMapping(value = "**/obterNotaFiscalCompraDaVenda/{idvenda}")
+    public ResponseEntity<List<NotaFiscalVenda>> obterNotaFiscalCompraDaVenda(@PathVariable("idvenda") Long idvenda) throws ExceptionLojaVirtual {
+
+        List<NotaFiscalVenda> notaFiscalCompra = notaFiscalVendaRepository.buscaNotaPorVenda(idvenda);
+
+        if (notaFiscalCompra == null) {
+            throw new ExceptionLojaVirtual("Não encontrou Nota Fiscal de venda com código da venda: " + idvenda);
+        }
+
+        return new ResponseEntity<List<NotaFiscalVenda>>(notaFiscalCompra, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "**/obterNotaFiscalCompraDaVendaUnico/{idvenda}")
+    public ResponseEntity<NotaFiscalVenda> obterNotaFiscalCompraDaVendaUnico(@PathVariable("idvenda") Long idvenda) throws ExceptionLojaVirtual {
+
+        NotaFiscalVenda notaFiscalVendas = notaFiscalVendaRepository.buscaNotaPorVendaUnica(idvenda);
+
+        if (notaFiscalVendas == null) {
+            throw new ExceptionLojaVirtual("Não encontrou Nota Fiscal de venda com código da venda: " + idvenda);
+        }
+
+        return new ResponseEntity<NotaFiscalVenda>(notaFiscalVendas, HttpStatus.OK);
+    }
+
+
+
+
+
 
     @ResponseBody
     @GetMapping(value = "**/buscaNotaFiscalPorDesc/{desc}")

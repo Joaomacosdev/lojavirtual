@@ -292,6 +292,52 @@ public class VendaCompraLojaVirtualController {
         return new ResponseEntity<List<VendaCompraLojaVirtualDTO>>(compraLojaVirtualDTOList, HttpStatus.OK);
     }
 
+    @ResponseBody
+    @GetMapping(value = "**/vendaPorCliente/{idCliente}")
+    public ResponseEntity<List<VendaCompraLojaVirtualDTO>> vendaPorCliente(@PathVariable("idCliente") Long idCliente) {
+
+
+        List<VendaCompraLojaVirtual> compraLojaVirtual = vendaCompraLojaVirtualReposiory.vendaPorCliente(idCliente);
+
+        if (compraLojaVirtual == null) {
+            compraLojaVirtual = new ArrayList<VendaCompraLojaVirtual>();
+        }
+
+        List<VendaCompraLojaVirtualDTO> compraLojaVirtualDTOList = new ArrayList<VendaCompraLojaVirtualDTO>();
+
+        for (VendaCompraLojaVirtual vcl : compraLojaVirtual) {
+
+            VendaCompraLojaVirtualDTO compraLojaVirtualDTO = new VendaCompraLojaVirtualDTO();
+
+            compraLojaVirtualDTO.setValorTotal(vcl.getValorTotal());
+            compraLojaVirtualDTO.setPessoa(vcl.getPessoa());
+
+            compraLojaVirtualDTO.setEntrega(vcl.getEnderecoEntrega());
+            compraLojaVirtualDTO.setCobranca(vcl.getEnderecoCobranca());
+
+            compraLojaVirtualDTO.setValorDesc(vcl.getValorDesconto());
+            compraLojaVirtualDTO.setValorFret(vcl.getValorFret());
+            compraLojaVirtualDTO.setId(vcl.getId());
+
+
+            for (ItemVendaLoja item : vcl.getItemVendaLojas()) {
+
+                ItemVendaLojaDTO itemVendaDTO = new ItemVendaLojaDTO();
+                itemVendaDTO.setQuantidade(item.getQuantidade());
+                itemVendaDTO.setProduto(item.getProduto());
+
+                compraLojaVirtualDTO.getItemVendaLojas().add(itemVendaDTO);
+            }
+
+            compraLojaVirtualDTOList.add(compraLojaVirtualDTO);
+
+        }
+
+
+        return new ResponseEntity<List<VendaCompraLojaVirtualDTO>>(compraLojaVirtualDTOList, HttpStatus.OK);
+    }
+
+
 
 
     @ResponseBody
